@@ -42,3 +42,6 @@ class Unc():
 		self.velocity = 0
 		self.position.x = x
 		self.position.y = y
+
+def PlaySound():
+	print("Saft")
