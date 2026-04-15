@@ -2,6 +2,11 @@
 import pygame
 from global_variables import gravity
 
+pygame.init()
+bounce_sfx = pygame.mixer.Sound("assets/ballin.wav")
+
+sound_threshold = 0.2
+
 class Unc():
 	def __init__(self, screen, position, size):
 		# public variables
@@ -34,11 +39,23 @@ class Unc():
 		self.velocity -= gravity
 		self.position.y = self.position.y - self.velocity
 		if self.position.y >= 400:
-			self.position.y = 400.0
-			self.velocity = -self.velocity * self.bounciness
+			self.Bounce()
 		self.distance_from_ground = 400-self.position.y
+
+	def Bounce(self):
+		self.position.y = 400.0
+		self.velocity = -self.velocity * self.bounciness
+		if (self.velocity > sound_threshold):
+			PlaySound(self.velocity/10)
 
 	def SetPosition(self, x, y):
 		self.velocity = 0
 		self.position.x = x
 		self.position.y = y
+
+def PlaySound(volume):
+	if (volume < 1.0):
+		bounce_sfx.set_volume(volume)
+	else:
+		bounce_sfx.set_volume(1.0)
+	bounce_sfx.play()
